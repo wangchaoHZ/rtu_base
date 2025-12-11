@@ -2,7 +2,6 @@
 # Clang-Format configuration for C code
 BasedOnStyle: LLVM
 Language: Cpp
-Standard: c11
 
 # Indentation
 IndentWidth: 4

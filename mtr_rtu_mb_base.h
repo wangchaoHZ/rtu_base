@@ -6,8 +6,7 @@
 #include "string.h"
 
 /* function codes */
-enum functionCode
-{
+enum functionCode {
     MODBUS_FC_READ_HOLDING_COILS = 0x01,
     MODBUS_FC_READ_INPUTS_COILS = 0x02,
     MODBUS_FC_READ_HOLDING_REGISTERS = 0x03,
@@ -22,8 +21,7 @@ enum functionCode
     MODBUS_FC_WRITE_AND_READ_REGISTERS = 0x17,
 };
 
-enum returnCode
-{
+enum returnCode {
     MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE = -0x83,
     MODBUS_EXCEPTION_ILLEGAL_DATA_ADDRESS = -0x82,
     MODBUS_EXCEPTION_ILLEGAL_FUNCTION = -0x81,
@@ -41,38 +39,18 @@ enum returnCode
     MODBUS_OK = 0
 };
 
-enum waitCode
-{
-    MODBUS_WAIT_FOREVER = -1,
-    MODBUS_WAIT_NO = 0
-};
+enum waitCode { MODBUS_WAIT_FOREVER = -1, MODBUS_WAIT_NO = 0 };
 
-enum coreType
-{
-    MODBUS_CORE_NONE = 0,
-    MODBUS_CORE_RTU = 1,
-    MODBUS_CORE_TCP = 2
-};
+enum coreType { MODBUS_CORE_NONE = 0, MODBUS_CORE_RTU = 1, MODBUS_CORE_TCP = 2 };
 
-enum portType
-{
-    MODBUS_PORT_NONE = 0,
-    MODBUS_PORT_DEVICE = 1,
-    MODBUS_PORT_SOCKET = 2
-};
+enum portType { MODBUS_PORT_NONE = 0, MODBUS_PORT_DEVICE = 1, MODBUS_PORT_SOCKET = 2 };
 
-enum deviceType
-{
-    MODBUS_DEVICE_NONE = 0,
-    MODBUS_DEVICE_SLAVE = 1,
-    MODBUS_DEVICE_MASTER = 2
-};
+enum deviceType { MODBUS_DEVICE_NONE = 0, MODBUS_DEVICE_SLAVE = 1, MODBUS_DEVICE_MASTER = 2 };
 
-enum mbMagic
-{
-    MODBUS_MAGIC = 0x4243424D,       //"MBCB"
-    MODBUS_CORE_MAGIC = 0x4343424D,  //"MBCC"
-    MODBUS_PORT_MAGIC = 0x5050424D,  //"MBPP"
+enum mbMagic {
+    MODBUS_MAGIC = 0x4243424D,      //"MBCB"
+    MODBUS_CORE_MAGIC = 0x4343424D, //"MBCC"
+    MODBUS_PORT_MAGIC = 0x5050424D, //"MBPP"
 };
 
 #define MTR_MODBUS_BROADCAST_ADDRESS 0
@@ -82,7 +60,7 @@ enum mbMagic
  * (chapter 6 section 11 page 29)
  * Quantity of Coils to write (2 bytes): 1 to 1968 (0x7B0)
  */
-#define MTR_MODBUS_MAX_READ_BITS  2000
+#define MTR_MODBUS_MAX_READ_BITS 2000
 #define MTR_MODBUS_MAX_WRITE_BITS 1968
 
 /* Modbus_Application_Protocol_V1_1b.pdf (chapter 6 section 3 page 15)
@@ -92,10 +70,10 @@ enum mbMagic
  * (chapter 6 section 17 page 38)
  * Quantity of Registers to write in R/W registers (2 bytes) 1 to 121 (0x79)
  */
-#define MTR_MODBUS_MAX_READ_REGISTERS     125
-#define MTR_MODBUS_MAX_WRITE_REGISTERS    123
+#define MTR_MODBUS_MAX_READ_REGISTERS 125
+#define MTR_MODBUS_MAX_WRITE_REGISTERS 123
 #define MTR_MODBUS_MAX_WR_WRITE_REGISTERS 121
-#define MTR_MODBUS_MAX_WR_READ_REGISTERS  125
+#define MTR_MODBUS_MAX_WR_READ_REGISTERS 125
 
 /* The size of the MODBUS PDU is limited by the size constraint inherited from
  * the first MODBUS implementation on Serial Line network (max. RS485 ADU = 256
@@ -118,7 +96,7 @@ enum mbMagic
  *bit max 2000
  *reg max 125
  */
-#define MTR_MODBUS_MAX_SWAP_LENGTH 250  // data length
+#define MTR_MODBUS_MAX_SWAP_LENGTH 250 // data length
 
 /* It's not really the minimal length (the real one is report slave ID
  * in RTU (4 bytes)) but it's a convenient size to use in RTU or TCP
@@ -134,37 +112,34 @@ enum mbMagic
 #define _MTR_MODBUS_EXCEPTION_RSP_LENGTH 5
 
 typedef struct _mtr_rtu_mb mtr_rtu_mb_t;
-typedef struct _mtr_rtu_mb_core mtr_rtu_mb_core_t;  // mb core (mb-rtu,mb-tcp)
-typedef struct _mtr_rtu_mb_port mtr_rtu_mb_port_t;  // mb port (rtthread  ,linux ,win32) serial socket
+typedef struct _mtr_rtu_mb_core mtr_rtu_mb_core_t; // mb core (mb-rtu,mb-tcp)
+typedef struct _mtr_rtu_mb_port mtr_rtu_mb_port_t; // mb port (rtthread  ,linux ,win32) serial socket
 
-struct _mtr_rtu_mb_core
-{
+struct _mtr_rtu_mb_core {
     const uint32_t magic;
     const uint16_t type;
     const uint16_t len_header;
     const uint16_t len_checksum;
     const uint16_t len_adu_max;
-    int (*build_request_header)(mtr_rtu_mb_t* smb, uint8_t* buff, int slave, int fun, int reg, int num);
-    int (*build_response_header)(mtr_rtu_mb_t* smb, uint8_t* buff, int slave, int fun);
-    int (*check_send_pre)(mtr_rtu_mb_t* smb, uint8_t* buff, int length);
-    int (*check_wait_request)(mtr_rtu_mb_t* smb, uint8_t* buff, int length);
-    int (*check_wait_response)(mtr_rtu_mb_t* smb, uint8_t* buff, int length);
+    int (*build_request_header)(mtr_rtu_mb_t *smb, uint8_t *buff, int slave, int fun, int reg, int num);
+    int (*build_response_header)(mtr_rtu_mb_t *smb, uint8_t *buff, int slave, int fun);
+    int (*check_send_pre)(mtr_rtu_mb_t *smb, uint8_t *buff, int length);
+    int (*check_wait_request)(mtr_rtu_mb_t *smb, uint8_t *buff, int length);
+    int (*check_wait_response)(mtr_rtu_mb_t *smb, uint8_t *buff, int length);
 };
 
-struct _mtr_rtu_mb_port
-{
+struct _mtr_rtu_mb_port {
     const uint32_t magic;
     const uint32_t type;
-    int (*open)(mtr_rtu_mb_t* smb);
-    int (*close)(mtr_rtu_mb_t* smb);
-    int (*read)(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length);
-    int (*write)(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length);
-    int (*flush)(mtr_rtu_mb_t* smb);
-    int (*wait)(mtr_rtu_mb_t* smb, int timeout);
+    int (*open)(mtr_rtu_mb_t *smb);
+    int (*close)(mtr_rtu_mb_t *smb);
+    int (*read)(mtr_rtu_mb_t *smb, uint8_t *data, uint16_t length);
+    int (*write)(mtr_rtu_mb_t *smb, uint8_t *data, uint16_t length);
+    int (*flush)(mtr_rtu_mb_t *smb);
+    int (*wait)(mtr_rtu_mb_t *smb, int timeout);
 };
 
-struct _mtr_rtu_mb
-{
+struct _mtr_rtu_mb {
     uint32_t mb_magic;
     uint16_t device_mode;
     uint8_t slave_addr;
@@ -175,66 +150,70 @@ struct _mtr_rtu_mb
 
     int status;
     int error_code;
-    uint32_t timeout_frame;                         // 帧超时时间ms
-    uint32_t timeout_byte;                          // 字节超时时间ms
-    uint8_t read_buff[MTR_MODBUS_MAX_ADU_LENGTH];   // mb读缓冲区
-    uint8_t write_buff[MTR_MODBUS_MAX_ADU_LENGTH];  // mb写缓冲区
-    mtr_rtu_mb_core_t* core;                        // mb core (mb-rtu,mb-tcp)
-    mtr_rtu_mb_port_t* port;                        // mb port (rtthread  ,linux ,win32) serial socket
+    uint32_t timeout_frame;                        // 帧超时时间ms
+    uint32_t timeout_byte;                         // 字节超时时间ms
+    uint8_t read_buff[MTR_MODBUS_MAX_ADU_LENGTH];  // mb读缓冲区
+    uint8_t write_buff[MTR_MODBUS_MAX_ADU_LENGTH]; // mb写缓冲区
+    mtr_rtu_mb_core_t *core;                       // mb core (mb-rtu,mb-tcp)
+    mtr_rtu_mb_port_t *port;                       // mb port (rtthread  ,linux ,win32) serial socket
 };
 
-int _mtr_rtu_mb_init(mtr_rtu_mb_t* smb);
-int _mtr_rtu_mb_debug(mtr_rtu_mb_t* smb, int level, const char* fmt, ...);
+int _mtr_rtu_mb_init(mtr_rtu_mb_t *smb);
+int _mtr_rtu_mb_debug(mtr_rtu_mb_t *smb, int level, const char *fmt, ...);
 
-#define mtr_rtu_mb_debug(smb, ...)       _mtr_rtu_mb_debug(smb, 3, __VA_ARGS__)
-#define mtr_rtu_mb_debug_info(smb, ...)  _mtr_rtu_mb_debug(smb, 2, __VA_ARGS__)
+#define mtr_rtu_mb_debug(smb, ...) _mtr_rtu_mb_debug(smb, 3, __VA_ARGS__)
+#define mtr_rtu_mb_debug_info(smb, ...) _mtr_rtu_mb_debug(smb, 2, __VA_ARGS__)
 #define mtr_rtu_mb_debug_error(smb, ...) _mtr_rtu_mb_debug(smb, 1, __VA_ARGS__)
 
 /* base api */
-int mtr_rtu_mb_connect(mtr_rtu_mb_t* smb);
-int mtr_rtu_mb_disconnect(mtr_rtu_mb_t* smb);
-int mtr_rtu_mb_write(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length);
-int mtr_rtu_mb_read(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length);
-int mtr_rtu_mb_flush(mtr_rtu_mb_t* smb);
-int mtr_rtu_mb_wait(mtr_rtu_mb_t* smb, int timeout);
-int mtr_rtu_mb_error_recovery(mtr_rtu_mb_t* smb);
-int mtr_rtu_mb_error_exit(mtr_rtu_mb_t* smb, int code);
+int mtr_rtu_mb_connect(mtr_rtu_mb_t *smb);
+int mtr_rtu_mb_disconnect(mtr_rtu_mb_t *smb);
+int mtr_rtu_mb_write(mtr_rtu_mb_t *smb, uint8_t *data, uint16_t length);
+int mtr_rtu_mb_read(mtr_rtu_mb_t *smb, uint8_t *data, uint16_t length);
+int mtr_rtu_mb_flush(mtr_rtu_mb_t *smb);
+int mtr_rtu_mb_wait(mtr_rtu_mb_t *smb, int timeout);
+int mtr_rtu_mb_error_recovery(mtr_rtu_mb_t *smb);
+int mtr_rtu_mb_error_exit(mtr_rtu_mb_t *smb, int code);
 
-int mtr_rtu_mb_set_frame_timeout(mtr_rtu_mb_t* smb, int timeout_ms);
-int mtr_rtu_mb_set_byte_timeout(mtr_rtu_mb_t* smb, int timeout_ms);
-int mtr_rtu_mb_set_slave(mtr_rtu_mb_t* smb, int slave);
-int mtr_rtu_mb_set_debug(mtr_rtu_mb_t* smb, int level);
+int mtr_rtu_mb_set_frame_timeout(mtr_rtu_mb_t *smb, int timeout_ms);
+int mtr_rtu_mb_set_byte_timeout(mtr_rtu_mb_t *smb, int timeout_ms);
+int mtr_rtu_mb_set_slave(mtr_rtu_mb_t *smb, int slave);
+int mtr_rtu_mb_set_debug(mtr_rtu_mb_t *smb, int level);
 
 /* master mode api */
 /* master start request */
-int mtr_rtu_mb_start_request(mtr_rtu_mb_t* smb, uint8_t* request, int function, int addr, int num, void* write_data);
+int mtr_rtu_mb_start_request(mtr_rtu_mb_t *smb, uint8_t *request, int function, int addr, int num, void *write_data);
 /* master wait for confirmation message */
-int mtr_rtu_mb_wait_confirm(mtr_rtu_mb_t* smb, uint8_t* response);
+int mtr_rtu_mb_wait_confirm(mtr_rtu_mb_t *smb, uint8_t *response);
 /* master handle confirmation message */
-int mtr_rtu_mb_handle_confirm(mtr_rtu_mb_t* smb, uint8_t* request, uint16_t request_len, uint8_t* response, uint16_t response_len, void* read_data);
+int mtr_rtu_mb_handle_confirm(mtr_rtu_mb_t *smb, uint8_t *request, uint16_t request_len, uint8_t *response,
+                              uint16_t response_len, void *read_data);
 /* master read */
-int mtr_rtu_mb_read_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* read_data);
-int mtr_rtu_mb_read_input_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* read_data);
-int mtr_rtu_mb_read_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* read_data);
-int mtr_rtu_mb_read_input_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* read_data);
+int mtr_rtu_mb_read_bits(mtr_rtu_mb_t *smb, int addr, int num, uint8_t *read_data);
+int mtr_rtu_mb_read_input_bits(mtr_rtu_mb_t *smb, int addr, int num, uint8_t *read_data);
+int mtr_rtu_mb_read_registers(mtr_rtu_mb_t *smb, int addr, int num, uint16_t *read_data);
+int mtr_rtu_mb_read_input_registers(mtr_rtu_mb_t *smb, int addr, int num, uint16_t *read_data);
 /* master write */
-int mtr_rtu_mb_write_bit(mtr_rtu_mb_t* smb, int addr, int write_status);
-int mtr_rtu_mb_write_register(mtr_rtu_mb_t* smb, int addr, int write_value);
-int mtr_rtu_mb_write_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* write_data);
-int mtr_rtu_mb_write_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* write_data);
+int mtr_rtu_mb_write_bit(mtr_rtu_mb_t *smb, int addr, int write_status);
+int mtr_rtu_mb_write_register(mtr_rtu_mb_t *smb, int addr, int write_value);
+int mtr_rtu_mb_write_bits(mtr_rtu_mb_t *smb, int addr, int num, uint8_t *write_data);
+int mtr_rtu_mb_write_registers(mtr_rtu_mb_t *smb, int addr, int num, uint16_t *write_data);
 /* master write and read */
-int mtr_rtu_mb_mask_write_register(mtr_rtu_mb_t* smb, int addr, uint16_t and_mask, uint16_t or_mask);
-int mtr_rtu_mb_write_and_read_registers(mtr_rtu_mb_t* smb, int write_addr, int write_nb, uint16_t* src, int read_addr, int read_nb, uint16_t* dest);
+int mtr_rtu_mb_mask_write_register(mtr_rtu_mb_t *smb, int addr, uint16_t and_mask, uint16_t or_mask);
+int mtr_rtu_mb_write_and_read_registers(mtr_rtu_mb_t *smb, int write_addr, int write_nb, uint16_t *src, int read_addr,
+                                        int read_nb, uint16_t *dest);
 
 /* slave callback */
-typedef int (*mtr_rtu_mb_slave_callback_t)(mtr_rtu_mb_t* smb, int function_code, int addr, int num, void* read_write_data);
+typedef int (*mtr_rtu_mb_slave_callback_t)(mtr_rtu_mb_t *smb, int function_code, int addr, int num,
+                                           void *read_write_data);
 
 /* slave mode api */
 /* slave wait query data */
-int mtr_rtu_mb_slave_wait(mtr_rtu_mb_t* smb, uint8_t* request, int32_t waittime);
+int mtr_rtu_mb_slave_wait(mtr_rtu_mb_t *smb, uint8_t *request, int32_t waittime);
 /* slave handle query data for callback */
-int mtr_rtu_mb_slave_handle(mtr_rtu_mb_t* smb, uint8_t* request, uint16_t request_len, mtr_rtu_mb_slave_callback_t slave_callback);
+int mtr_rtu_mb_slave_handle(mtr_rtu_mb_t *smb, uint8_t *request, uint16_t request_len,
+                            mtr_rtu_mb_slave_callback_t slave_callback);
 /* slave wait and handle query for callback */
-int mtr_rtu_mb_slave_wait_handle(mtr_rtu_mb_t* smb, mtr_rtu_mb_slave_callback_t slave_callback, int32_t waittime);
+int mtr_rtu_mb_slave_wait_handle(mtr_rtu_mb_t *smb, mtr_rtu_mb_slave_callback_t slave_callback, int32_t waittime);
 
 #endif /* MTR_RTU_MB_BASE_H */

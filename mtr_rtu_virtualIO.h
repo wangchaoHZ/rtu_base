@@ -16,11 +16,11 @@
 #include "stdio.h"
 #include "string.h"
 
-int mtr_rtu_read_hold_regs(uint16_t addr, uint16_t num, uint16_t* buffer);
-int mtr_rtu_write_hold_regs(uint16_t addr, uint16_t num, uint16_t* buffer);
-int mtr_rtu_read_hold_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
-int mtr_rtu_read_input_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
-int mtr_rtu_read_input_regs(uint16_t addr, uint16_t num, uint16_t* buffer);
-int mtr_rtu_write_hold_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
+int mtr_rtu_read_hold_regs(uint16_t addr, uint16_t num, uint16_t *buffer);
+int mtr_rtu_write_hold_regs(uint16_t addr, uint16_t num, uint16_t *buffer);
+int mtr_rtu_read_hold_coils(uint16_t addr, uint16_t num, uint8_t *buffer);
+int mtr_rtu_read_input_coils(uint16_t addr, uint16_t num, uint8_t *buffer);
+int mtr_rtu_read_input_regs(uint16_t addr, uint16_t num, uint16_t *buffer);
+int mtr_rtu_write_hold_coils(uint16_t addr, uint16_t num, uint8_t *buffer);
 
 #endif /* MTR_RTU_VIRTUALIO_H */

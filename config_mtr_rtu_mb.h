@@ -12,7 +12,7 @@
 /*
  *  RTTHREAD PORT
  */
-#define MTR_RTU_MODBUS_RTTHREAD            1u
+#define MTR_RTU_MODBUS_RTTHREAD 1u
 #define MTR_RTU_MODBUS_RTTHREAD_USE_DEVICE 1u
 #if MTR_RTU_MODBUS_RTTHREAD
 #include "mtr_rtu_mb_port_rtthread.h"
@@ -25,10 +25,10 @@
  *  A3+:CN3-7Pin
  *  B3-:CN3-8Pin
  */
-#define MTR_RTU_SLAVE_ADDR        1u
-#define MTR_RTU_UART_DEVICE_NAME  "uart4"
+#define MTR_RTU_SLAVE_ADDR 1u
+#define MTR_RTU_UART_DEVICE_NAME "uart4"
 #define MTR_RTU_THREAD_STACK_SIZE 1024u
-#define MTR_RTU_THREAD_PRIORITY   19u
-#define MTR_RTU_THREAD_TICKS      15u
+#define MTR_RTU_THREAD_PRIORITY 19u
+#define MTR_RTU_THREAD_TICKS 15u
 
 #endif /* CONFIG_MTR_RTU_MB_H */
