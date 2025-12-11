@@ -4,7 +4,12 @@
  * @LastEditors: wangchao
  * @LastEditTime: 2025-09-23 18:00:29
  * @FilePath: \STD_BMS_MB_FW\MB_RTU_MTR\mtr_rtu_virtualIO.c
- * @Description   :
+ * @Description   : Template implementation for Virtual I/O handlers
+ *                  This file provides example implementations of the I/O
+ *                  callback functions declared in mtr_rtu_virtualIO.h.
+ *                  Users should implement these functions according to their
+ *                  application requirements. The code is disabled by default
+ *                  with #if 0 to allow users to provide their own implementations.
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
 #include "mtr_rtu_virtualIO.h"
@@ -13,7 +18,7 @@
 #include "stdio.h"
 #include "string.h"
 
-#if 0
+#if 0 /* Template implementation - users should provide their own */
 
 #define DBG_TAG "MTR"
 #define DBG_LVL DBG_INFO
