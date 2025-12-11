@@ -12,8 +12,8 @@
  * Date           Author       Notes
  * 2020-08-21     chenbin      small mb the first version
  */
-#ifndef _MTR_RTU_MB_CORE_H
-#define _MTR_RTU_MB_CORE_H
+#ifndef MTR_RTU_MB_CORE_H
+#define MTR_RTU_MB_CORE_H
 
 #include "mtr_rtu_mb_base.h"
 extern const mtr_rtu_mb_core_t _mtr_rtu_mb_core;
@@ -25,4 +25,4 @@ extern const mtr_rtu_mb_core_t _mtr_rtu_mb_core;
 #define _MTR_MODBUS_RTU_CHECKSUM_LENGTH 2
 #define _MTR_MODBUS_RTU_MAX_ADU_LENGTH 260
 
-#endif /* _MTR_MODBUS_RTU_H_ */
+#endif /* MTR_RTU_MB_CORE_H */

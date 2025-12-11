@@ -7,8 +7,8 @@
  * @Description   :
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
-#ifndef _MTR_RTU_MB_PORT_RTTHREAD_H
-#define _MTR_RTU_MB_PORT_RTTHREAD_H
+#ifndef MTR_RTU_MB_PORT_RTTHREAD_H
+#define MTR_RTU_MB_PORT_RTTHREAD_H
 
 #include "config_mtr_rtu_mb.h"
 #include "mtr_rtu_mb_base.h"
@@ -61,6 +61,6 @@ int mtr_rtu_mb_rtu_set_serial_config(mtr_rtu_mb_t *smb,
                                       struct serial_configure *serial_config);
 int mtr_rtu_mb_rtu_set_oflag(mtr_rtu_mb_t *smb, int oflag);
 
-#endif
-#endif
-#endif
+#endif /* MTR_RTU_MODBUS_RTTHREAD_USE_DEVICE */
+#endif /* MTR_RTU_MODBUS_RTTHREAD */
+#endif /* MTR_RTU_MB_PORT_RTTHREAD_H */

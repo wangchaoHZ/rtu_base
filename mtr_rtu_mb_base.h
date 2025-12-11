@@ -1,5 +1,5 @@
-#ifndef _MTR_MODBUS_BASE_H_
-#define _MTR_MODBUS_BASE_H_
+#ifndef MTR_RTU_MB_BASE_H
+#define MTR_RTU_MB_BASE_H
 
 #include "stdint.h"
 #include "stdio.h"
@@ -237,4 +237,4 @@ int mtr_rtu_mb_slave_handle(mtr_rtu_mb_t* smb, uint8_t* request, uint16_t reques
 /* slave wait and handle query for callback */
 int mtr_rtu_mb_slave_wait_handle(mtr_rtu_mb_t* smb, mtr_rtu_mb_slave_callback_t slave_callback, int32_t waittime);
 
-#endif /* _MTR_MODBUS_BASE_H_ */
+#endif /* MTR_RTU_MB_BASE_H */

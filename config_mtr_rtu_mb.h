@@ -7,8 +7,8 @@
  * @Description   :
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
-#ifndef _CONFIG_MTR_RTU_MB_H
-#define _CONFIG_MTR_RTU_MB_H
+#ifndef CONFIG_MTR_RTU_MB_H
+#define CONFIG_MTR_RTU_MB_H
 /*
  *  RTTHREAD PORT
  */
@@ -30,5 +30,5 @@
 #define MTR_RTU_THREAD_STACK_SIZE 1024u
 #define MTR_RTU_THREAD_PRIORITY   19u
 #define MTR_RTU_THREAD_TICKS      15u
-#endif
-/* __CONFIG_MTR_MODBUS_H__ */
+
+#endif /* CONFIG_MTR_RTU_MB_H */

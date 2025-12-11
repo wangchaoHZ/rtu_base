@@ -7,11 +7,11 @@
  * @Description   :
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
-#ifndef _MTR_RTU_MB_H
-#define _MTR_RTU_MB_H
+#ifndef MTR_RTU_MB_H
+#define MTR_RTU_MB_H
 
 #include "config_mtr_rtu_mb.h"
 #include "mtr_rtu_mb_base.h"
 #include "mtr_rtu_mb_utils.h"
 
-#endif /* _MTR_MODBUS_H_ */
+#endif /* MTR_RTU_MB_H */

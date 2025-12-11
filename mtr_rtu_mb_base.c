@@ -24,7 +24,7 @@ int _mtr_rtu_mb_init(mtr_rtu_mb_t* smb)
     return MODBUS_OK;
 }
 
-int mtr_rtu_mb_context_check(mtr_rtu_mb_t* smb)
+static int mtr_rtu_mb_context_check(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_OK;
     if (NULL == smb)

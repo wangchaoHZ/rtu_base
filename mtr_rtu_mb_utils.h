@@ -7,8 +7,8 @@
  * @Description   :
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
-#ifndef _MTR_MODBUS_UTILS_H_
-#define _MTR_MODBUS_UTILS_H_
+#ifndef MTR_RTU_MB_UTILS_H
+#define MTR_RTU_MB_UTILS_H
 
 #include "stdint.h"
 #include "stdio.h"
@@ -27,4 +27,4 @@ void mtr_rtu_dio_set_val(uint8_t* array, uint16_t index, uint16_t status);
 uint16_t mtr_rtu_aio_get_val(uint16_t* array, uint16_t index);
 void mtr_rtu_aio_set_val(uint16_t* array, uint16_t index, uint16_t status);
 
-#endif
+#endif /* MTR_RTU_MB_UTILS_H */

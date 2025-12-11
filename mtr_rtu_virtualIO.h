@@ -8,8 +8,8 @@
  * @Copyright     : Copyright 2024 wang chao, All Rights Reserved.
  */
 
-#ifndef _MTR_RTU_VIRTUALIO_H
-#define _MTR_RTU_VIRTUALIO_H
+#ifndef MTR_RTU_VIRTUALIO_H
+#define MTR_RTU_VIRTUALIO_H
 
 #include "mtr_rtu_mb.h"
 #include "stdint.h"
@@ -22,4 +22,5 @@ int mtr_rtu_read_hold_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
 int mtr_rtu_read_input_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
 int mtr_rtu_read_input_regs(uint16_t addr, uint16_t num, uint16_t* buffer);
 int mtr_rtu_write_hold_coils(uint16_t addr, uint16_t num, uint8_t* buffer);
-#endif
+
+#endif /* MTR_RTU_VIRTUALIO_H */
