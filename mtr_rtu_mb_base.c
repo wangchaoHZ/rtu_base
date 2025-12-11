@@ -1,9 +1,9 @@
-#include "rtu1_mb_base.h"
-#include "rtu1_mb_utils.h"
+#include "mtr_rtu_mb_base.h"
+#include "mtr_rtu_mb_utils.h"
 
 #include <rtdevice.h>
 
-int _rtu1_mb_init(rtu1_mb_t* smb)
+int _mtr_rtu_mb_init(mtr_rtu_mb_t* smb)
 {
     if (smb != NULL)
     {
@@ -24,7 +24,7 @@ int _rtu1_mb_init(rtu1_mb_t* smb)
     return MODBUS_OK;
 }
 
-int rtu1_mb_context_check(rtu1_mb_t* smb)
+int mtr_rtu_mb_context_check(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_OK;
     if (NULL == smb)
@@ -45,11 +45,11 @@ int rtu1_mb_context_check(rtu1_mb_t* smb)
 /*
  * *
  */
-int rtu1_mb_connect(rtu1_mb_t* smb)
+int mtr_rtu_mb_connect(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -62,11 +62,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_disconnect(rtu1_mb_t* smb)
+int mtr_rtu_mb_disconnect(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -79,11 +79,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_write(rtu1_mb_t* smb, uint8_t* data, uint16_t length)
+int mtr_rtu_mb_write(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -96,11 +96,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_read(rtu1_mb_t* smb, uint8_t* data, uint16_t length)
+int mtr_rtu_mb_read(mtr_rtu_mb_t* smb, uint8_t* data, uint16_t length)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -113,11 +113,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_flush(rtu1_mb_t* smb)
+int mtr_rtu_mb_flush(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -130,11 +130,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_wait(rtu1_mb_t* smb, int timeout)
+int mtr_rtu_mb_wait(mtr_rtu_mb_t* smb, int timeout)
 {
     int ret = MODBUS_FAIL;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -147,7 +147,7 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_want_read(rtu1_mb_t* smb, uint8_t* buff, uint16_t len, int32_t wait_time)
+int mtr_rtu_mb_want_read(mtr_rtu_mb_t* smb, uint8_t* buff, uint16_t len, int32_t wait_time)
 {
     uint8_t* read_buff = buff;
     uint16_t read_len = 0;
@@ -155,22 +155,22 @@ int rtu1_mb_want_read(rtu1_mb_t* smb, uint8_t* buff, uint16_t len, int32_t wait_
 
     do
     {
-        read_len += rtu1_mb_read(smb, read_buff + read_len, len - read_len);
+        read_len += mtr_rtu_mb_read(smb, read_buff + read_len, len - read_len);
         if (read_len >= len)
         {
             return read_len;  // read ok
         }
-        rc = rtu1_mb_wait(smb, wait_time);
+        rc = mtr_rtu_mb_wait(smb, wait_time);
     } while (rc >= MODBUS_OK);
 
     return rc;  // happen An error occurred
 }
 
-int rtu1_mb_error_recovery(rtu1_mb_t* smb)
+int mtr_rtu_mb_error_recovery(mtr_rtu_mb_t* smb)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -183,11 +183,11 @@ __exit:
     return ret;
 }
 
-int rtu1_mb_error_exit(rtu1_mb_t* smb, int code)
+int mtr_rtu_mb_error_exit(mtr_rtu_mb_t* smb, int code)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK == ret)
     {
         smb->error_code = code;
@@ -196,11 +196,11 @@ int rtu1_mb_error_exit(rtu1_mb_t* smb, int code)
 }
 
 /* set frame timeout (ms) */
-int rtu1_mb_set_frame_timeout(rtu1_mb_t* smb, int timeout_ms)
+int mtr_rtu_mb_set_frame_timeout(mtr_rtu_mb_t* smb, int timeout_ms)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK == ret)
     {
         smb->timeout_frame = timeout_ms;
@@ -209,11 +209,11 @@ int rtu1_mb_set_frame_timeout(rtu1_mb_t* smb, int timeout_ms)
 }
 
 /* set byte timeout (ms) */
-int rtu1_mb_set_byte_timeout(rtu1_mb_t* smb, int timeout_ms)
+int mtr_rtu_mb_set_byte_timeout(mtr_rtu_mb_t* smb, int timeout_ms)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK == ret)
     {
         smb->timeout_byte = timeout_ms;
@@ -222,11 +222,11 @@ int rtu1_mb_set_byte_timeout(rtu1_mb_t* smb, int timeout_ms)
 }
 
 /* set slave addr */
-int rtu1_mb_set_slave(rtu1_mb_t* smb, int slave)
+int mtr_rtu_mb_set_slave(mtr_rtu_mb_t* smb, int slave)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK == ret)
     {
         if ((0 < slave) && (247 > slave))
@@ -242,11 +242,11 @@ int rtu1_mb_set_slave(rtu1_mb_t* smb, int slave)
 }
 
 /* set debug level */
-int rtu1_mb_set_debug(rtu1_mb_t* smb, int level)
+int mtr_rtu_mb_set_debug(mtr_rtu_mb_t* smb, int level)
 {
     int ret = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK == ret)
     {
         smb->debug_level = level;
@@ -255,20 +255,20 @@ int rtu1_mb_set_debug(rtu1_mb_t* smb, int level)
 }
 
 /* master start request */
-int rtu1_mb_start_request(rtu1_mb_t* smb, uint8_t* request, int function, int addr, int num, void* write_data)
+int mtr_rtu_mb_start_request(mtr_rtu_mb_t* smb, uint8_t* request, int function, int addr, int num, void* write_data)
 {
     int ret = MODBUS_OK;
     int len = 0;
     uint16_t count = 0;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // check funcode addr num
-    if (rtu1_mb_check_addr_num(function, addr, num))
+    if (mtr_rtu_mb_check_addr_num(function, addr, num))
     {
         // build mb header data
         len = smb->core->build_request_header(smb, request, smb->slave_addr, function, addr, num);
@@ -283,7 +283,7 @@ int rtu1_mb_start_request(rtu1_mb_t* smb, uint8_t* request, int function, int ad
             break;
             case MODBUS_FC_WRITE_SINGLE_REGISTER:
             {
-                rtu1_mb_reg_h2m(&(request[len - 2]), write_data, 1);
+                mtr_rtu_mb_reg_h2m(&(request[len - 2]), write_data, 1);
             }
             break;
             case MODBUS_FC_WRITE_MULTIPLE_COILS:
@@ -292,7 +292,7 @@ int rtu1_mb_start_request(rtu1_mb_t* smb, uint8_t* request, int function, int ad
                 count = (num / 8) + ((num % 8) ? 1 : 0);
                 request[len++] = count;
 
-                rtu1_mb_coil_h2m(&(request[len]), write_data, num);
+                mtr_rtu_mb_coil_h2m(&(request[len]), write_data, num);
 
                 len += count;
             }
@@ -303,7 +303,7 @@ int rtu1_mb_start_request(rtu1_mb_t* smb, uint8_t* request, int function, int ad
                 count = (num * 2);
                 request[len++] = count;
 
-                rtu1_mb_reg_h2m(&(request[len]), write_data, num);
+                mtr_rtu_mb_reg_h2m(&(request[len]), write_data, num);
 
                 len += count;
             }
@@ -317,7 +317,7 @@ int rtu1_mb_start_request(rtu1_mb_t* smb, uint8_t* request, int function, int ad
         if (ret > 0)
         {
             len = ret;
-            ret = rtu1_mb_write(smb, request, len);
+            ret = mtr_rtu_mb_write(smb, request, len);
         }
     }
     else
@@ -328,7 +328,7 @@ __exit:
     return ret;
 }
 /* master wait for confirmation message */
-int rtu1_mb_wait_confirm(rtu1_mb_t* smb, uint8_t* response)
+int mtr_rtu_mb_wait_confirm(mtr_rtu_mb_t* smb, uint8_t* response)
 {
     int ret = MODBUS_OK;
     int wait_time = 0;
@@ -337,7 +337,7 @@ int rtu1_mb_wait_confirm(rtu1_mb_t* smb, uint8_t* response)
     int read_position = 0;
     int function = 0;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -348,15 +348,15 @@ int rtu1_mb_wait_confirm(rtu1_mb_t* smb, uint8_t* response)
 
     while (read_want != 0)
     {
-        ret = rtu1_mb_want_read(smb, response + read_length, read_want, wait_time);
+        ret = mtr_rtu_mb_want_read(smb, response + read_length, read_want, wait_time);
         if (MODBUS_OK > ret)
         {
-            rtu1_mb_debug_error(smb, "[%d]read(%d) error\n", ret, read_want);
+            mtr_rtu_mb_debug_error(smb, "[%d]read(%d) error\n", ret, read_want);
             goto __exit;
         }
         if (ret != read_want)
         {
-            rtu1_mb_debug_info(smb, "[%d]read(%d) less\n", ret, read_want);
+            mtr_rtu_mb_debug_info(smb, "[%d]read(%d) less\n", ret, read_want);
         }
 
         read_length += ret;  // sum byte length
@@ -420,7 +420,7 @@ int rtu1_mb_wait_confirm(rtu1_mb_t* smb, uint8_t* response)
                 read_want += smb->core->len_checksum;
                 if ((read_want + read_length) > smb->core->len_adu_max)
                 {
-                    rtu1_mb_debug_error(smb, "More than ADU %d > %d\n", (read_want + read_length), smb->core->len_adu_max);
+                    mtr_rtu_mb_debug_error(smb, "More than ADU %d > %d\n", (read_want + read_length), smb->core->len_adu_max);
                     ret = MODBUS_FAIL_CONFIRM;
                     goto __exit;
                 }
@@ -437,7 +437,7 @@ __exit:
     return ret;
 }
 /* master handle confirmation message */
-int rtu1_mb_handle_confirm(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len, uint8_t* response, uint16_t response_len, void* read_data)
+int mtr_rtu_mb_handle_confirm(mtr_rtu_mb_t* smb, uint8_t* request, uint16_t request_len, uint8_t* response, uint16_t response_len, void* read_data)
 {
     int ret = MODBUS_OK;
     uint16_t rw_num = 0;
@@ -447,7 +447,7 @@ int rtu1_mb_handle_confirm(rtu1_mb_t* smb, uint8_t* request, uint16_t request_le
     uint8_t request_function = 0;
     uint8_t response_function = 0;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -461,9 +461,9 @@ int rtu1_mb_handle_confirm(rtu1_mb_t* smb, uint8_t* request, uint16_t request_le
     {
         if ((response_function - 0x80) == request_function)
         {
-            rtu1_mb_debug_error(smb, "request function code %d\n", request_function);
+            mtr_rtu_mb_debug_error(smb, "request function code %d\n", request_function);
         }
-        rtu1_mb_debug_error(smb, "response exception code %d\n", 0 - response_function);
+        mtr_rtu_mb_debug_error(smb, "response exception code %d\n", 0 - response_function);
         ret = 0 - response_function;
         goto __exit;
     }
@@ -508,7 +508,7 @@ int rtu1_mb_handle_confirm(rtu1_mb_t* smb, uint8_t* request, uint16_t request_le
                     byte_num = (response[smb->core->len_header + 1]);
                     if ((uint8_t)temp == byte_num)
                     {
-                        rtu1_mb_coil_m2h(read_data, &(response[smb->core->len_header + 2]), rw_num);
+                        mtr_rtu_mb_coil_m2h(read_data, &(response[smb->core->len_header + 2]), rw_num);
                         ret = MODBUS_OK;
                         goto __exit;
                     }
@@ -522,7 +522,7 @@ int rtu1_mb_handle_confirm(rtu1_mb_t* smb, uint8_t* request, uint16_t request_le
                     byte_num = (response[smb->core->len_header + 1]);
                     if ((uint8_t)temp == byte_num)
                     {
-                        rtu1_mb_reg_m2h(read_data, &(response[smb->core->len_header + 2]), rw_num);
+                        mtr_rtu_mb_reg_m2h(read_data, &(response[smb->core->len_header + 2]), rw_num);
                         ret = MODBUS_OK;
                         goto __exit;
                     }
@@ -560,7 +560,7 @@ __exit:
 }
 
 /* master read */
-int rtu1_mb_read_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_data)
+int mtr_rtu_mb_read_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* read_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -568,14 +568,14 @@ int rtu1_mb_read_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_data)
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_READ_HOLDING_COILS, addr, num, NULL);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_READ_HOLDING_COILS, addr, num, NULL);
     if (0 > ret)
     {
         goto __exit;
@@ -583,7 +583,7 @@ int rtu1_mb_read_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_data)
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -591,14 +591,14 @@ int rtu1_mb_read_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_data)
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
 
 __exit:
     return ret;
 }
 
 /* master read */
-int rtu1_mb_read_input_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_data)
+int mtr_rtu_mb_read_input_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* read_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -606,14 +606,14 @@ int rtu1_mb_read_input_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_dat
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_READ_INPUTS_COILS, addr, num, NULL);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_READ_INPUTS_COILS, addr, num, NULL);
     if (0 > ret)
     {
         goto __exit;
@@ -621,7 +621,7 @@ int rtu1_mb_read_input_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_dat
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -629,13 +629,13 @@ int rtu1_mb_read_input_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* read_dat
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
 
 __exit:
     return ret;
 }
 /* master read */
-int rtu1_mb_read_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* read_data)
+int mtr_rtu_mb_read_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* read_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -643,14 +643,14 @@ int rtu1_mb_read_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* read_dat
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_READ_HOLDING_REGISTERS, addr, num, NULL);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_READ_HOLDING_REGISTERS, addr, num, NULL);
     if (0 > ret)
     {
         goto __exit;
@@ -658,7 +658,7 @@ int rtu1_mb_read_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* read_dat
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -666,13 +666,13 @@ int rtu1_mb_read_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* read_dat
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
 
 __exit:
     return ret;
 }
 /* master read */
-int rtu1_mb_read_input_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* read_data)
+int mtr_rtu_mb_read_input_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* read_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -680,14 +680,14 @@ int rtu1_mb_read_input_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* re
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_READ_INPUT_REGISTERS, addr, num, NULL);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_READ_INPUT_REGISTERS, addr, num, NULL);
     if (0 > ret)
     {
         goto __exit;
@@ -695,7 +695,7 @@ int rtu1_mb_read_input_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* re
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -703,13 +703,13 @@ int rtu1_mb_read_input_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* re
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, read_data);
 
 __exit:
     return ret;
 }
 /* master write */
-int rtu1_mb_write_bit(rtu1_mb_t* smb, int addr, int write_status)
+int mtr_rtu_mb_write_bit(mtr_rtu_mb_t* smb, int addr, int write_status)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -718,14 +718,14 @@ int rtu1_mb_write_bit(rtu1_mb_t* smb, int addr, int write_status)
     uint8_t* response = smb->read_buff;
     int status = write_status ? 0xFF00 : 0x0;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_WRITE_SINGLE_COIL, addr, 1, &status);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_WRITE_SINGLE_COIL, addr, 1, &status);
     if (0 > ret)
     {
         goto __exit;
@@ -733,7 +733,7 @@ int rtu1_mb_write_bit(rtu1_mb_t* smb, int addr, int write_status)
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -741,13 +741,13 @@ int rtu1_mb_write_bit(rtu1_mb_t* smb, int addr, int write_status)
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
 
 __exit:
     return ret;
 }
 /* master write */
-int rtu1_mb_write_register(rtu1_mb_t* smb, int addr, int write_value)
+int mtr_rtu_mb_write_register(mtr_rtu_mb_t* smb, int addr, int write_value)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -756,14 +756,14 @@ int rtu1_mb_write_register(rtu1_mb_t* smb, int addr, int write_value)
     uint8_t* response = smb->read_buff;
     int value = write_value;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_WRITE_SINGLE_REGISTER, addr, 1, &value);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_WRITE_SINGLE_REGISTER, addr, 1, &value);
     if (0 > ret)
     {
         goto __exit;
@@ -771,7 +771,7 @@ int rtu1_mb_write_register(rtu1_mb_t* smb, int addr, int write_value)
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -779,13 +779,13 @@ int rtu1_mb_write_register(rtu1_mb_t* smb, int addr, int write_value)
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
 
 __exit:
     return ret;
 }
 /* master write */
-int rtu1_mb_write_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* write_data)
+int mtr_rtu_mb_write_bits(mtr_rtu_mb_t* smb, int addr, int num, uint8_t* write_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -793,14 +793,14 @@ int rtu1_mb_write_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* write_data)
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_WRITE_MULTIPLE_COILS, addr, num, write_data);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_WRITE_MULTIPLE_COILS, addr, num, write_data);
     if (0 > ret)
     {
         goto __exit;
@@ -808,7 +808,7 @@ int rtu1_mb_write_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* write_data)
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -816,13 +816,13 @@ int rtu1_mb_write_bits(rtu1_mb_t* smb, int addr, int num, uint8_t* write_data)
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
 
 __exit:
     return ret;
 }
 /* master write */
-int rtu1_mb_write_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* write_data)
+int mtr_rtu_mb_write_registers(mtr_rtu_mb_t* smb, int addr, int num, uint16_t* write_data)
 {
     int ret = MODBUS_OK;
     int request_len = 0;
@@ -830,14 +830,14 @@ int rtu1_mb_write_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* write_d
     uint8_t* request = smb->write_buff;
     uint8_t* response = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
     // start request
-    ret = rtu1_mb_start_request(smb, request, MODBUS_FC_WRITE_MULTIPLE_REGISTERS, addr, num, write_data);
+    ret = mtr_rtu_mb_start_request(smb, request, MODBUS_FC_WRITE_MULTIPLE_REGISTERS, addr, num, write_data);
     if (0 > ret)
     {
         goto __exit;
@@ -845,7 +845,7 @@ int rtu1_mb_write_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* write_d
     request_len = ret;
 
     // wait slave comfirm
-    ret = rtu1_mb_wait_confirm(smb, response);
+    ret = mtr_rtu_mb_wait_confirm(smb, response);
     if (0 >= ret)
     {
         goto __exit;
@@ -853,24 +853,24 @@ int rtu1_mb_write_registers(rtu1_mb_t* smb, int addr, int num, uint16_t* write_d
     response_len = ret;
 
     // check comfirm
-    ret = rtu1_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
+    ret = mtr_rtu_mb_handle_confirm(smb, request, request_len, response, response_len, NULL);
 
 __exit:
     return ret;
 }
 /* master write and read */
-int rtu1_mb_mask_write_register(rtu1_mb_t* smb, int addr, uint16_t and_mask, uint16_t or_mask)
+int mtr_rtu_mb_mask_write_register(mtr_rtu_mb_t* smb, int addr, uint16_t and_mask, uint16_t or_mask)
 {
-    int rc = rtu1_mb_context_check(smb);
+    int rc = mtr_rtu_mb_context_check(smb);
     if (rc < MODBUS_OK)
     {
         return rc;
     }
     return MODBUS_FAIL;
 }
-int rtu1_mb_write_and_read_registers(rtu1_mb_t* smb, int write_addr, int write_nb, uint16_t* src, int read_addr, int read_nb, uint16_t* dest)
+int mtr_rtu_mb_write_and_read_registers(mtr_rtu_mb_t* smb, int write_addr, int write_nb, uint16_t* src, int read_addr, int read_nb, uint16_t* dest)
 {
-    int rc = rtu1_mb_context_check(smb);
+    int rc = mtr_rtu_mb_context_check(smb);
     if (rc < MODBUS_OK)
     {
         return rc;
@@ -879,7 +879,7 @@ int rtu1_mb_write_and_read_registers(rtu1_mb_t* smb, int write_addr, int write_n
 }
 
 /* slave wait query data */
-int rtu1_mb_slave_wait(rtu1_mb_t* smb, uint8_t* request, int32_t wait_time)
+int mtr_rtu_mb_slave_wait(mtr_rtu_mb_t* smb, uint8_t* request, int32_t wait_time)
 {
     int ret = MODBUS_OK;
     int read_step = 0;
@@ -887,7 +887,7 @@ int rtu1_mb_slave_wait(rtu1_mb_t* smb, uint8_t* request, int32_t wait_time)
     int read_length = 0;
     int function = 0;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -897,15 +897,15 @@ int rtu1_mb_slave_wait(rtu1_mb_t* smb, uint8_t* request, int32_t wait_time)
 
     while (read_want != 0)
     {
-        ret = rtu1_mb_want_read(smb, request + read_length, read_want, wait_time);
+        ret = mtr_rtu_mb_want_read(smb, request + read_length, read_want, wait_time);
         if (MODBUS_OK > ret)
         {
-            rtu1_mb_debug_error(smb, "[%d]read(%d) error\n", ret, read_want);
+            mtr_rtu_mb_debug_error(smb, "[%d]read(%d) error\n", ret, read_want);
             goto __exit;
         }
         if (ret != read_want)
         {
-            rtu1_mb_debug_info(smb, "[%d]read(%d) less\n", ret, read_want);
+            mtr_rtu_mb_debug_info(smb, "[%d]read(%d) less\n", ret, read_want);
         }
 
         read_length += ret;  // sum byte length
@@ -963,7 +963,7 @@ int rtu1_mb_slave_wait(rtu1_mb_t* smb, uint8_t* request, int32_t wait_time)
                     read_step = 2;
                     if ((read_want + read_length) > smb->core->len_adu_max)
                     {
-                        rtu1_mb_debug_error(smb, "More than ADU %d > %d\n", (read_want + read_length), smb->core->len_adu_max);
+                        mtr_rtu_mb_debug_error(smb, "More than ADU %d > %d\n", (read_want + read_length), smb->core->len_adu_max);
                         return MODBUS_FAIL;
                     }
                 }
@@ -983,7 +983,7 @@ __exit:
 }
 
 /* slave handle query data for callback */
-int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len, rtu1_mb_slave_callback_t slave_callback)
+int mtr_rtu_mb_slave_handle(mtr_rtu_mb_t* smb, uint8_t* request, uint16_t request_len, mtr_rtu_mb_slave_callback_t slave_callback)
 {
     int ret = MODBUS_OK;
     uint8_t* response = smb->write_buff;
@@ -996,7 +996,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
     int response_data_len = 0;
     int response_data_exception = MODBUS_OK;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
@@ -1010,31 +1010,31 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
         {
             query_address = (request[smb->core->len_header + 1] << 8) + request[smb->core->len_header + 2];
             query_num = (request[smb->core->len_header + 3] << 8) + request[smb->core->len_header + 4];
-            if (rtu1_mb_check_addr_num(query_function, query_address, query_num))
+            if (mtr_rtu_mb_check_addr_num(query_function, query_address, query_num))
             {
                 response_len = smb->core->build_response_header(smb, response, query_slave, query_function);
                 if (slave_callback)
                 {
                     response_data_len = slave_callback(smb, query_function, query_address, query_num, (response + response_len + 1));
                 }
-                if ((0 < response_data_len) && rtu1_mb_check_addr_num(query_function, query_address, response_data_len))
+                if ((0 < response_data_len) && mtr_rtu_mb_check_addr_num(query_function, query_address, response_data_len))
                 {
                     bytes = (response_data_len / 8) + ((response_data_len % 8) ? 1 : 0);
                     response[response_len] = bytes;
 
-                    rtu1_mb_coil_h2m((response + response_len + 1), (response + response_len + 1), response_data_len);
+                    mtr_rtu_mb_coil_h2m((response + response_len + 1), (response + response_len + 1), response_data_len);
 
                     response_len += (bytes + 1);
                 }
                 else
                 {
-                    rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                    mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                     response_data_exception = MODBUS_EXCEPTION;
                 }
             }
             else
             {
-                //                rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_READ_BITS);
+                //                mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_READ_BITS);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
         }
@@ -1045,7 +1045,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             query_address = (request[smb->core->len_header + 1] << 8) + request[smb->core->len_header + 2];
             query_num = (request[smb->core->len_header + 3] << 8) + request[smb->core->len_header + 4];
             // check funcode addr num
-            if (rtu1_mb_check_addr_num(query_function, query_address, query_num))
+            if (mtr_rtu_mb_check_addr_num(query_function, query_address, query_num))
             {
                 response_len = smb->core->build_response_header(smb, response, query_slave, query_function);
 
@@ -1055,24 +1055,24 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
                     response_data_len = slave_callback(smb, query_function, query_address, query_num, (response + response_len + 1));
                 }
                 // check funcode addr num
-                if ((0 < response_data_len) && rtu1_mb_check_addr_num(query_function, query_address, response_data_len))
+                if ((0 < response_data_len) && mtr_rtu_mb_check_addr_num(query_function, query_address, response_data_len))
                 {
                     bytes = response_data_len * 2;
                     response[response_len] = bytes;
                     // host to mb
-                    rtu1_mb_reg_h2m((response + response_len + 1), (response + response_len + 1), response_data_len);
+                    mtr_rtu_mb_reg_h2m((response + response_len + 1), (response + response_len + 1), response_data_len);
 
                     response_len += (bytes + 1);
                 }
                 else
                 {
-                    rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                    mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                     response_data_exception = MODBUS_EXCEPTION;
                 }
             }
             else
             {
-                //                rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num,
+                //                mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num,
                 //                MODBUS_MAX_READ_REGISTERS);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
@@ -1088,7 +1088,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             if (slave_callback)
             {
                 // mb to host
-                rtu1_mb_coil_m2h((request + smb->core->len_header + 3), (request + smb->core->len_header + 3), 1);
+                mtr_rtu_mb_coil_m2h((request + smb->core->len_header + 3), (request + smb->core->len_header + 3), 1);
                 // callback
                 response_data_len = slave_callback(smb, query_function, query_address, 1, (request + smb->core->len_header + 3));
             }
@@ -1101,7 +1101,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             }
             else
             {
-                rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,value:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,value:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
         }
@@ -1116,7 +1116,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             if (slave_callback)
             {
                 // mb to host
-                rtu1_mb_reg_m2h((request + smb->core->len_header + 3), (request + smb->core->len_header + 3), 1);
+                mtr_rtu_mb_reg_m2h((request + smb->core->len_header + 3), (request + smb->core->len_header + 3), 1);
                 // callback
                 response_data_len = slave_callback(smb, query_function, query_address, 1, (request + smb->core->len_header + 3));
             }
@@ -1129,7 +1129,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             }
             else
             {
-                rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,value:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,value:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
         }
@@ -1139,19 +1139,19 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             query_address = (request[smb->core->len_header + 1] << 8) + request[smb->core->len_header + 2];
             query_num = (request[smb->core->len_header + 3] << 8) + request[smb->core->len_header + 4];
 
-            if (rtu1_mb_check_addr_num(query_function, query_address, query_num))
+            if (mtr_rtu_mb_check_addr_num(query_function, query_address, query_num))
             {
                 response_len = smb->core->build_response_header(smb, response, query_slave, query_function);
 
                 if (slave_callback)
                 {
                     // mb to host
-                    rtu1_mb_coil_m2h((request + smb->core->len_header + 6), (request + smb->core->len_header + 6), query_num);
+                    mtr_rtu_mb_coil_m2h((request + smb->core->len_header + 6), (request + smb->core->len_header + 6), query_num);
                     // callback
                     response_data_len = slave_callback(smb, query_function, query_address, query_num, (request + smb->core->len_header + 6));
                 }
                 // check funcode addr num
-                if ((0 < response_data_len) && rtu1_mb_check_addr_num(query_function, query_address, response_data_len))
+                if ((0 < response_data_len) && mtr_rtu_mb_check_addr_num(query_function, query_address, response_data_len))
                 {
                     response[response_len++] = (query_address >> 8);
                     response[response_len++] = (query_address & 0x00ff);
@@ -1160,13 +1160,13 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
                 }
                 else
                 {
-                    rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                    mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                     response_data_exception = MODBUS_EXCEPTION;
                 }
             }
             else
             {
-                //                rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_WRITE_BITS);
+                //                mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_WRITE_BITS);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
         }
@@ -1176,18 +1176,18 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
             query_address = (request[smb->core->len_header + 1] << 8) + request[smb->core->len_header + 2];
             query_num = (request[smb->core->len_header + 3] << 8) + request[smb->core->len_header + 4];
             // check funcode addr num
-            if (rtu1_mb_check_addr_num(query_function, query_address, query_num))
+            if (mtr_rtu_mb_check_addr_num(query_function, query_address, query_num))
             {
                 response_len = smb->core->build_response_header(smb, response, query_slave, query_function);
                 if (slave_callback)
                 {
                     // mb to host
-                    rtu1_mb_reg_m2h((request + smb->core->len_header + 6), (request + smb->core->len_header + 6), query_num);
+                    mtr_rtu_mb_reg_m2h((request + smb->core->len_header + 6), (request + smb->core->len_header + 6), query_num);
                     // callback
                     response_data_len = slave_callback(smb, query_function, query_address, query_num, (request + smb->core->len_header + 6));
                 }
                 // check funcode addr num
-                if ((0 < response_data_len) && rtu1_mb_check_addr_num(query_function, query_address, response_data_len))
+                if ((0 < response_data_len) && mtr_rtu_mb_check_addr_num(query_function, query_address, response_data_len))
                 {
                     response[response_len++] = (query_address >> 8);
                     response[response_len++] = (query_address & 0x00ff);
@@ -1196,13 +1196,13 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
                 }
                 else
                 {
-                    rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
+                    mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d rc:%d\n", query_slave, query_function, query_address, query_num, response_data_len);
                     response_data_exception = MODBUS_EXCEPTION;
                 }
             }
             else
             {
-                // rtu1_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_WRITE_REGISTERS);
+                // mtr_rtu_mb_debug_error(smb, "slave:0x%0X,function:0x%0X,addr:%d,num:%d not at[1-%d]\n", query_slave, query_function, query_address, query_num, MODBUS_MAX_WRITE_REGISTERS);
                 response_data_exception = MODBUS_EXCEPTION_ILLEGAL_DATA_VALUE;
             }
         }
@@ -1226,13 +1226,13 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
         case MODBUS_FC_MASK_WRITE_REGISTER:
         case MODBUS_FC_WRITE_AND_READ_REGISTERS:
         {
-            rtu1_mb_debug_error(smb, "slave:0x%0X,Unknown Modbus function code: 0x%0X\n", query_slave, query_function);
+            mtr_rtu_mb_debug_error(smb, "slave:0x%0X,Unknown Modbus function code: 0x%0X\n", query_slave, query_function);
             response_data_exception = MODBUS_EXCEPTION_ILLEGAL_FUNCTION;
         }
         break;
         default:
         {
-            rtu1_mb_debug_error(smb, "slave:0x%0X,Unknown Modbus function code: 0x%0X\n", query_slave, query_function);
+            mtr_rtu_mb_debug_error(smb, "slave:0x%0X,Unknown Modbus function code: 0x%0X\n", query_slave, query_function);
             response_data_exception = MODBUS_EXCEPTION_ILLEGAL_FUNCTION;
         }
         break;
@@ -1253,7 +1253,7 @@ int rtu1_mb_slave_handle(rtu1_mb_t* smb, uint8_t* request, uint16_t request_len,
         ret = smb->core->check_send_pre(smb, response, response_len);
         if (ret > 0)
         {
-            ret = rtu1_mb_write(smb, response, ret);
+            ret = mtr_rtu_mb_write(smb, response, ret);
         }
     }
     else
@@ -1266,24 +1266,24 @@ __exit:
 }
 
 /* slave wait and handle query for callback */
-int rtu1_mb_slave_wait_handle(rtu1_mb_t* smb, rtu1_mb_slave_callback_t slave_callback, int32_t waittime)
+int mtr_rtu_mb_slave_wait_handle(mtr_rtu_mb_t* smb, mtr_rtu_mb_slave_callback_t slave_callback, int32_t waittime)
 {
     int ret = 0;
     uint8_t* request = smb->read_buff;
 
-    ret = rtu1_mb_context_check(smb);
+    ret = mtr_rtu_mb_context_check(smb);
     if (MODBUS_OK != ret)
     {
         goto __exit;
     }
 
-    ret = rtu1_mb_slave_wait(smb, request, waittime);
+    ret = mtr_rtu_mb_slave_wait(smb, request, waittime);
     if (0 > ret)
     {
         goto __exit;
     }
 
-    ret = rtu1_mb_slave_handle(smb, request, ret, slave_callback);
+    ret = mtr_rtu_mb_slave_handle(smb, request, ret, slave_callback);
 
 __exit:
     return ret;

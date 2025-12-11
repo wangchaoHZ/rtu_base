@@ -3,8 +3,8 @@
  * Date           Author       Notes
  * 2020-08-21     chenbin      small mb the first version
  */
-#include "rtu1_mb_utils.h"
-#include "rtu1_mb_base.h"
+#include "mtr_rtu_mb_utils.h"
+#include "mtr_rtu_mb_base.h"
 #include "stdint.h"
 #include "string.h"
 #include <stdint.h>
@@ -12,7 +12,7 @@
 #include "u_utilits.h"
 
 // 计算 CRC16（Modbus）
-uint16_t rtu1_mb_crc16(uint8_t* buffer, uint16_t length)
+uint16_t mtr_rtu_mb_crc16(uint8_t* buffer, uint16_t length)
 {
     uint16_t crc = 0xFFFF;
     while (length--)
@@ -24,13 +24,13 @@ uint16_t rtu1_mb_crc16(uint8_t* buffer, uint16_t length)
 }
 
 // 获取数字量值（第 index 位）
-int rtu1_dio_get_val(uint8_t* array, uint16_t index)
+int mtr_rtu_dio_get_val(uint8_t* array, uint16_t index)
 {
     return (array[index >> 3] >> (index & 0x07)) & 0x01;
 }
 
 // 设置数字量值（第 index 位）
-void rtu1_dio_set_val(uint8_t* array, uint16_t index, uint16_t status)
+void mtr_rtu_dio_set_val(uint8_t* array, uint16_t index, uint16_t status)
 {
     uint8_t bit_mask = 1U << (index & 0x07);
     uint8_t* byte = &array[index >> 3];
@@ -41,24 +41,24 @@ void rtu1_dio_set_val(uint8_t* array, uint16_t index, uint16_t status)
         *byte &= ~bit_mask;
 }
 
-uint16_t rtu1_aio_get_val(uint16_t* array, uint16_t index)
+uint16_t mtr_rtu_aio_get_val(uint16_t* array, uint16_t index)
 {
     return array[index];
 }
 
-void rtu1_aio_set_val(uint16_t* array, uint16_t index, uint16_t status)
+void mtr_rtu_aio_set_val(uint16_t* array, uint16_t index, uint16_t status)
 {
     array[index] = status;
 }
 
-int rtu1_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
+int mtr_rtu_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
 {
     switch (function)
     {
         case MODBUS_FC_READ_HOLDING_COILS:
         case MODBUS_FC_READ_INPUTS_COILS:
         {
-            if ((0 < num) && (num <= RTU1_MAX_READ_BITS))  // 读取到的线圈数量大于0且小于2000个
+            if ((0 < num) && (num <= MTR_MODBUS_MAX_READ_BITS))  // 读取到的线圈数量大于0且小于2000个
             {
                 return 1;
             }
@@ -67,7 +67,7 @@ int rtu1_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
         case MODBUS_FC_READ_HOLDING_REGISTERS:
         case MODBUS_FC_READ_INPUT_REGISTERS:
         {
-            if ((0 < num) && (num <= RTU1_MAX_READ_REGISTERS))  // 读取到的寄存器数量大于0且小于125个
+            if ((0 < num) && (num <= MTR_MODBUS_MAX_READ_REGISTERS))  // 读取到的寄存器数量大于0且小于125个
             {
                 return 1;
             }
@@ -75,7 +75,7 @@ int rtu1_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
         break;
         case MODBUS_FC_WRITE_MULTIPLE_COILS:
         {
-            if ((0 < num) && (num <= RTU1_MAX_WRITE_BITS))  // 读取到的寄存器数量大于0且小于1968个
+            if ((0 < num) && (num <= MTR_MODBUS_MAX_WRITE_BITS))  // 读取到的寄存器数量大于0且小于1968个
             {
                 return 1;
             }
@@ -83,7 +83,7 @@ int rtu1_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
         break;
         case MODBUS_FC_WRITE_MULTIPLE_REGISTERS:
         {
-            if ((0 < num) && (num <= RTU1_MAX_WRITE_REGISTERS))  // 读取到的寄存器数量大于0且小于123个
+            if ((0 < num) && (num <= MTR_MODBUS_MAX_WRITE_REGISTERS))  // 读取到的寄存器数量大于0且小于123个
             {
                 return 1;
             }
@@ -98,7 +98,7 @@ int rtu1_mb_check_addr_num(uint8_t function, uint16_t address, uint16_t num)
     return 0;
 }
 
-void rtu1_mb_byte_copy(uint8_t* des, uint8_t* src, int num)
+void mtr_rtu_mb_byte_copy(uint8_t* des, uint8_t* src, int num)
 {
     while (num--)
     {
@@ -108,7 +108,7 @@ void rtu1_mb_byte_copy(uint8_t* des, uint8_t* src, int num)
     }
 }
 
-void rtu1_mb_coil_h2m(uint8_t* des, uint8_t* src, int coil_num)
+void mtr_rtu_mb_coil_h2m(uint8_t* des, uint8_t* src, int coil_num)
 {
     int num = (coil_num / 8) + ((coil_num % 8) ? 1 : 0);
     do
@@ -119,7 +119,7 @@ void rtu1_mb_coil_h2m(uint8_t* des, uint8_t* src, int coil_num)
     } while (--num);
 }
 
-void rtu1_mb_coil_m2h(uint8_t* des, uint8_t* src, int coil_num)
+void mtr_rtu_mb_coil_m2h(uint8_t* des, uint8_t* src, int coil_num)
 {
     int num = (coil_num / 8) + ((coil_num % 8) ? 1 : 0);
     do
@@ -135,7 +135,7 @@ void rtu1_mb_coil_m2h(uint8_t* des, uint8_t* src, int coil_num)
 Modbus register data is in big end mode
 host uint16_t >> mb_reg
 */
-void rtu1_mb_reg_h2m(void* dest_mb_reg, void* source_host, int reg_num)
+void mtr_rtu_mb_reg_h2m(void* dest_mb_reg, void* source_host, int reg_num)
 {
     uint8_t* source_host_ptr = source_host;
     uint8_t* dest_mb_ptr = dest_mb_reg;
@@ -156,7 +156,7 @@ void rtu1_mb_reg_h2m(void* dest_mb_reg, void* source_host, int reg_num)
 /*
 mb_reg >> host uint16_t
 */
-void rtu1_mb_reg_m2h(void* dest_host, void* source_mb_reg, int reg_num)
+void mtr_rtu_mb_reg_m2h(void* dest_host, void* source_mb_reg, int reg_num)
 {
     uint8_t* source_mb_ptr = source_mb_reg;
     uint8_t* dest_host_ptr = dest_host;
